@@ -1,66 +1,52 @@
-
 import os
-
-os.system("pip install -r requirements.txt")
-
 import csv
 from certificate import *
 from docx import Document
 from docx2pdf import convert
 
-# create output folder if not exist
+# Create output folders if they don't exist
 try:
     os.makedirs("Output/Doc")
     os.makedirs("Output/PDF")
 except OSError:
     pass
 
-def get_participants(f):
-    data = [] # create empty list
-    with open(f, mode="r", encoding='utf-8') as file:
+def get_participants(file_path):
+    data = []
+    with open(file_path, mode="r", encoding='utf-8') as file:
         csv_reader = csv.DictReader(file)
         for row in csv_reader:
-            data.append(row) # append all results
+            data.append(row)
     return data
 
-def create_docx_files(filename, list_participate):
-
+def create_docx_files(template_path, participants):
     event = input("Enter the event name: ")
-    ambassador = input("Enter Ambassador Name: ")
+    ambassador = input("Enter Host Ambassador Name: ")
+    cohost = input("Enter Co-host Ambassador Name: ")
+    event_date = input("Enter the event date (e.g., October 27, 2024): ")
 
-    for index, participate in enumerate(list_participate):
-        # use original file everytime
-        doc = Document(filename)
+    for participant in participants:
+        doc = Document(template_path)
 
-        name = participate["Name"].strip()
-        email = participate["Email"].strip()
+        name = participant["Name"].strip()
+        # email = participant["Email"].strip()
 
         replace_participant_name(doc, name)
         replace_event_name(doc, event)
         replace_ambassador_name(doc, ambassador)
+        replace_cohost_name(doc, cohost)
+        replace_event_date(doc, event_date)
 
-        doc.save('Output/Doc/{}.docx'.format(name))
+        doc.save(f'Output/Doc/{name}.docx')
 
-        doc.save('Output/Doc/{}.docx'.format(name))
+        print(f"Creating PDF for {name}")
+        convert(f'Output/Doc/{name}.docx', f'Output/Pdf/{name}.pdf')
 
-        # ! if your program working slowly, comment this two line and open other 2 line.
-        print("Output/{}.pdf Creating".format(name))
-        convert('Output/Doc/{}.docx'.format(name), 'Output/Pdf/{}.pdf'.format(name))
-
-        filepath = os.path.abspath('Output/Pdf/{}.pdf'.format(name))
-
-    
-# get certificate template path
+# Set certificate template and participant list paths
 certificate_file = "Data/Event Certificate Template.docx"
-# get participants path
-print("NOTE: Selecting Test Mode as 'N' will use actual data from Data/Participant List.csv & Test mode as 'Y' will use dummy data from temp.csv, choosing Y will result in generation of only 1 certificate, this is to be used for testing only.")
-participate_file = "Data/"+("Participant List.csv" if (input("Test Mode (Y/N): ").lower())[0]=="n" else "temp.csv")
+print("NOTE: Selecting Test Mode as 'N' will use actual data from Data/Participant List.csv. Test mode 'Y' uses temp.csv, generating only 1 certificate for testing.")
+participate_file = "Data/" + ("Participant List.csv" if input("Test Mode (Y/N): ").lower().startswith("n") else "temp.csv")
 
-# get participants
-list_participate = get_participants(participate_file)
-
-# process data
-create_docx_files(certificate_file, list_participate)
-
-
-
+# Get participants and process data
+participants = get_participants(participate_file)
+create_docx_files(certificate_file, participants)

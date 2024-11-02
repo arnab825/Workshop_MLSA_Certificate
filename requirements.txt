@@ -11,4 +11,3 @@ fuzzywuzzy
 pandas
 pywin32
 pdf2image
-pywin32

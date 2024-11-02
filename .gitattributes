@@ -1,0 +1,4 @@
+# Set text files to use LF in the repository and convert to CRLF on Windows checkouts
+*.ipynb text eol=lf
+*.py text eol=lf
+*.txt text eol=lf

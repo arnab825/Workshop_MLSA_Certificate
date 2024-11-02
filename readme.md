@@ -84,7 +84,7 @@ Test mode is for developers who wish to tweak code, it has sample data to genera
 - You need to do is feed Participant Data either by using the scripts in `Filter Participants/` or manually populate the `Participant List.csv` file.  
 - Make sure that you have Outlook Installed with the MLSA email id as the primary account, before you run any code that sends emails to your participants.  
 - Click on `Run` in the respective Jupyter Notebook blocks.  
-- Click on Outbox/Sent Items in Outlook to see the mails being sent one by one.  
+- Click on Outbox/Sent Items in Outlook to see the mails being sent one by one (Use the Classic outlook so it can run).  
 
 ## Video Tutorial
 Link & Image (yet to be prepared)

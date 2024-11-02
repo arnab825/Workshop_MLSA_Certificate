@@ -5,7 +5,7 @@ def docx_replace_regex(doc_obj, regex, replace, add_space=False, add_tab=False):
     if add_space:
         replace = f"\t{replace} "  # Add spaces on both sides
     if add_tab:
-        replace = f"\t\t{replace}"  # Add tabs on both sides for alignment
+        replace = f"\t\t\t\t{replace}\t"  # Add tabs on both sides for alignment
 
     # Check paragraphs
     for p in doc_obj.paragraphs:
